@@ -1,140 +1,55 @@
-# SerienStream IP für Cloudstream — Version 3
+# SerienStream & Filmo IP für Cloudstream
 
-Experimentelle Android-Erweiterung für **http://186.2.175.5/**.
-Serienkategorien, Suche, Cover, Beschreibungen, Staffeln und Episoden werden
-in Cloudstreams eigener Oberfläche angezeigt.
+Zwei getrennte Erweiterungen im selben Repository:
 
-## Installieren oder aktualisieren
+| Erweiterung | Inhalt | Version |
+| --- | --- | --- |
+| **SerienStream IP** | Serien von http://186.2.175.5/ | 3 |
+| **Filmo IP** | Filme von http://45.10.243.23/ | 1 |
 
-Repository-Adresse:
+## Installieren
+
+Diesen Repo-Link in Cloudstream unter **Einstellungen → Erweiterungen → Repository hinzufügen** eintragen:
 
 https://raw.githubusercontent.com/aadel886/serienstream-ip/builds/repo.json
 
-In Cloudstream unter **Einstellungen → Erweiterungen** dieses Repository
-hinzufügen und **SerienStream IP** installieren. Ist es bereits installiert,
-das Repository aktualisieren, das Plugin auf **Version 3** aktualisieren und
-Cloudstream vollständig schließen und erneut öffnen. Kein neues Repository nötig.
-Je nach App-Version heißen die Schaltflächen etwas anders.
+Ist das Repo schon vorhanden, einfach **aktualisieren** und zusätzlich
+**Filmo IP** installieren. Auf der Cloudstream-Startseite anschließend die
+gewünschte Quelle auswählen. Die aktuelle Cloudstream-Vorabversion wird benötigt.
 
-Die Erweiterung wurde gegen die aktuelle Cloudstream-Vorabversion gebaut.
-Android API 23 oder neuer wird benötigt; der Fire TV Stick 4K Plus mit Fire OS 8
-erfüllt diese Voraussetzung. Eine aktuelle Android-System-WebView ist für
-Cloudflares CAPTCHA wichtig.
+## Filme auf dem Fire TV
 
-## Folge abspielen
+Film suchen oder durch die Kategorien blättern, Film öffnen, Abspielen wählen,
+dann Hoster und Sprache auswählen. Die Erweiterung übergibt den Stream an
+Cloudstreams Player. VOE-Weiterleitungen und Byse-Zwischenseiten werden aufgelöst.
+Bei den geprüften Filmquellen war kein CAPTCHA erforderlich.
 
-1. In Cloudstream die Quelle **SerienStream IP** öffnen und eine Folge auswählen.
-2. Im nativen Dialog Hoster und Sprache wählen, z. B. **VOE [Deutsch]**.
-3. Falls erforderlich, im kompakten Fenster das CAPTCHA selbst bestätigen.
-   Eine erfolgreiche Bestätigung sendet das normale Freigabeformular automatisch ab.
-4. Nach der Weiterleitung schließt das Fenster. Der Hoster-Extractor liefert
-   die verfügbaren Streams an Cloudstreams Player. In dessen Quellenliste
-   stehen Hoster, Sprache und die vom Extractor gelieferten Varianten.
+Filmo IP bietet Kategorien, eine Filmübersicht mit weiteren Seiten, Suche,
+Cover, Beschreibungen, Jahr, Laufzeit, Genres, Darsteller und Trailer,
+soweit die Website diese Informationen liefert.
 
-Es wird jeweils die zuvor ausgewählte Hoster-/Sprachkombination aufgelöst.
-Es gibt keine Zusage, dass alle Sprachen gleichzeitig ohne weitere Freigabe
-in der Quellenliste verfügbar sind. Qualität, Untertitel und Tonspuren hängen
-vom Hoster ab; 4K wird nicht garantiert.
+Die Quellenwahl zeigt die Qualitätsangabe der Website. Es gibt **kein 720p-Limit**
+im Plugin: Alle vom Cloudstream-Extractor gelieferten Qualitätsstufen werden
+übernommen. Eine 720p-Quelle erhält durch Hochskalieren keine echten 4K-Details.
+Bei Quellen mit mehreren Tonspuren gegebenenfalls im Player Audio umstellen.
 
-Mit **Zum CAPTCHA** wechselt der Fokus in die Freigabe. Die **Menütaste** führt
-zur Bedienleiste zurück. **Erneut versuchen** lädt eine frische Sitzung und ein
-neues Formular; **Abbrechen** oder **Zurück** beendet den Vorgang.
-Die CAPTCHA-Oberfläche stammt von Cloudflare. Abhängig von WebView und
-Fernbedienung kann für das Kästchen weiterhin eine Maus nötig sein.
-Es gibt keine automatische CAPTCHA-Lösung und keine Zugangsdaten im Plugin.
+## Prüfstand
 
-## Änderung gegenüber Version 2
+Beide Erweiterungen lassen sich kompilieren; Parser-, Freigabe-, Cookie-,
+Redirect- und Repository-Tests laufen im GitHub-Workflow.
+**Die vollständige Filmo-Wiedergabe und ein echtes Filmo-CAPTCHA wurden noch
+nicht auf einem Android-/Fire-TV-Gerät getestet.** Die Film-Erweiterung ist
+als Testversion gekennzeichnet. Die manuelle SerienStream-Freigabe bleibt bestehen.
 
-Version 2 konnte den Hoster im eingebetteten Browser laden, ohne die Adresse
-an Cloudstream zu übergeben. Androids Request-Callback meldet bei
-Weiterleitungen nur die ursprüngliche URL; wechselnde Hoster-Domains konnten
-zusätzlich an der bisherigen Domainliste scheitern.
+## Quellcode und Updates
 
-Version 3 verwendet:
+- **Source.zip:** SerienStream IP, mit Tests und eigener Anleitung.
+- **FilmoSource.zip:** Filmo IP, mit Tests und eigener Anleitung.
+- **.github/workflows/build.yml:** baut beide Archive und veröffentlicht
+  `SerienStreamIP.cs3`, `FilmoIP.cs3`, `plugins.json` und `repo.json` im Branch `builds`.
 
-- Eine native Quellen- und Sprachauswahl vor der Freigabe.
-- Ein eigenes kompaktes Formular am ursprünglichen Website-Ursprung mit
-  aktuellen Website-Tokens, denselben Sitzungs-Cookies und demselben User-Agent
-  wie die WebView. Das Formular nutzt die reguläre Turnstile-Prüfung der Website.
-- Eine Formular-Weiterleitung im Hauptfenster statt in einem Video-Iframe.
-  Die externe Zieladresse wird abgefangen; im Fenster ist kein Video-Player eingebaut.
-- Normale GET-Weiterleitungen für bereits freigegebene Sitzungen, ohne erneut
-  ein CAPTCHA zu verlangen, sofern die Website das erlaubt.
-- Hoster-Auswahl anhand des von der Website gelieferten Namens, damit z. B.
-  neue VOE-Mirror-Domains an den vorhandenen VOE-Extractor übergeben werden.
-- Benannte Quellen im Cloudstream-Player sowie sichtbare Fehler- und Wiederholungsaktionen.
-
-Die vorhandenen Cloudstream-Extractoren bleiben für die eigentlichen Videolinks
-zuständig. Wenn ein Hoster seine Technik ändert, kann ein Cloudstream-Update
-oder eine weitere Anpassung erforderlich sein.
-
-## Prüfstand und Grenzen
-
-Am **2. November 2026** bestanden:
-
-- Kotlin-Kompilierung, Android-DEX-Erzeugung und CS3-Paketprüfung.
-- Parser-Regressionsprüfungen für Serien, Bilder, Specials und Episoden.
-- Tests mit einem lokalen HTTP-Server für Cookies, relative Weiterleitungen,
-  neue Hoster-Domains, Fehlerantworten und Weiterleitungsschleifen.
-- Tests für frische Freigabe-Tokens, die ausgewählte Sprache, Formular-Escaping
-  und die Weiterleitung im Hauptfenster.
-- JavaScript-Tests mit einer simulierten Turnstile-API: keine Übermittlung vor
-  Bestätigung, automatische Übergabe danach, keine doppelten Übermittlungen,
-  abgelaufene Freigaben und Fehlermeldungen.
-- Prüfung der Formularstruktur anhand einer aktuellen öffentlichen Episodenseite
-  mit zwei Quellen. Dabei wurde kein echtes CAPTCHA abgeschickt.
-
-**Offen: CAPTCHA und vollständige Wiedergabe auf einem echten Android-/Fire-TV-Gerät.**
-Ein erfolgreicher Build ist kein Beleg für erfolgreiche Wiedergabe. Diese Version
-ist ein gezielter Reparaturversuch für die beobachtete Übergabestörung.
-Wenn es weiterhin scheitert, helfen Cloudstream-Version, Plugin-Version,
-Serie/Folge, gewählte Sprache und der genaue Text der Fehlermeldung.
-Keine Passwörter, Cookies oder Freigabe-Tokens weitergeben.
-
-Favoriten, Verlauf, Pause und Spulen gehören zur Cloudstream-App.
-
-## Quellcode und Build
-
-Im veröffentlichten GitHub-Repository liegt der vollständige Quellcode in
-**Source.zip**, mit den Quelldateien direkt im Archiv-Hauptverzeichnis.
-Der Workflow im Repository entpackt dieses Archiv, führt die Tests aus und
-veröffentlicht `SerienStreamIP.cs3`, `plugins.json` und `repo.json` im Branch `builds`.
-
-Zum lokalen Bauen Source.zip entpacken. Voraussetzungen:
-**Python 3.10+, Java 17+, Node.js 18+** und Internetzugang für die Build-Abhängigkeiten.
-Ein vollständiges Android-SDK wird nicht benötigt.
-
-```bash
-python tools/build.py --repo aadel886/serienstream-ip
-```
-
-Optional eine lokal gespeicherte aktuelle Episodenseite prüfen:
-
-```bash
-python tools/build.py --repo aadel886/serienstream-ip --episode-fixture /pfad/episode.html
-```
-
-Ausgaben liegen in `dist/`, der Testbericht in `build/build-report.json`.
-Website-Seiten, Sitzungen und Freigabe-Tokens gehören nicht in das Quellarchiv.
-Für Updates `version` in `plugin.json` erhöhen und das aktualisierte Source.zip
-hochladen. Das Archiv enthält auch einen alternativen Workflow für Repositories,
-die den entpackten Quellcode direkt im Hauptverzeichnis verwalten.
-
-Downloads sind über SHA-256 in `dependencies.json` festgelegt. Bei einer geänderten
-Cloudstream-API-Datei stoppt der Build, bis Kompatibilität und Prüfsumme überprüft
-wurden. Änderungen an Website und Hostern werden nicht automatisch repariert.
-
-## Technische Referenzen
-
-- [Cloudstream-API und Extractoren](https://github.com/recloudstream/cloudstream)
-- [Offene AniWorld-/SerienStream-Implementierungen zum Vergleich](https://github.com/Bnyro/GermanProviders)
-- [Vom Nutzer genanntes Phisher-Repository](https://github.com/phisher98/cloudstream-extensions-phisher):
-  dessen AniWorld-Paket beschreibt auch SerienStream mit Anmeldung in den
-  Erweiterungs-Einstellungen. Der aktuelle Hauptbranch enthält keinen entsprechenden
-  offenen Provider-Quellcode; dieser Fix behauptet nicht, dessen Implementierung zu kopieren.
-- [Android: WebViewClient und Redirect-Callbacks](https://developer.android.com/reference/android/webkit/WebViewClient)
-- [Cloudflare: Turnstile in WebViews](https://developers.cloudflare.com/turnstile/get-started/mobile-implementation/)
-- [Cloudstream auf TV-Geräten](https://recloudstream.github.io/csdocs/other-devices/tv/)
-
-Build-Abhängigkeiten unterliegen ihren jeweiligen Lizenzen. Die Erweiterung
-enthält weder Website-Inhalte noch Videos.
+Die Quelldateien liegen in den Archiven direkt im Hauptverzeichnis.
+Versionsnummern stehen jeweils in `plugin.json`. Website-Dateien, Cookies,
+Zugangsdaten und Videos gehören nicht in die Archive.
+Build-Abhängigkeiten sind über SHA-256 festgelegt. Änderungen an Website oder
+Hostern können eine neue Erweiterungs- oder Cloudstream-Version erfordern.
