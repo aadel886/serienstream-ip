@@ -2,19 +2,19 @@
   {
     "name": "SerienStream IP",
     "internalName": "SerienStreamIP",
-    "version": 2,
+    "version": 3,
     "status": 3,
     "authors": [
       "Custom provider"
     ],
-    "description": "SerienStream über 186.2.175.5. Experimentelle Android-Erweiterung mit manueller CAPTCHA-Freigabe; Wiedergabe noch nicht auf einem Gerät verifiziert.",
+    "description": "SerienStream über 186.2.175.5. Native Quellen-/Sprachauswahl, kompaktes manuelles CAPTCHA und direkte Player-Übergabe. Experimentell; Geräteprüfung ausstehend.",
     "language": "de",
     "tvTypes": [
       "TvSeries"
     ],
     "apiVersion": 1,
     "url": "https://raw.githubusercontent.com/aadel886/serienstream-ip/builds/SerienStreamIP.cs3",
-    "fileSize": 35932,
+    "fileSize": 47903,
     "repositoryUrl": "https://github.com/aadel886/serienstream-ip"
   }
 ]
