@@ -16,5 +16,23 @@
     "url": "https://raw.githubusercontent.com/aadel886/serienstream-ip/builds/SerienStreamIP.cs3",
     "fileSize": 47903,
     "repositoryUrl": "https://github.com/aadel886/serienstream-ip"
+  },
+  {
+    "name": "Filmo IP",
+    "internalName": "FilmoIP",
+    "version": 1,
+    "status": 3,
+    "authors": [
+      "Custom provider"
+    ],
+    "description": "Filme von Filmo über 45.10.243.23: Suche, Kategorien, Quellen-/Sprachauswahl und direkte Übergabe an Cloudstream. Alle vom Hoster gelieferten Auflösungen; kein 720p-Limit. Experimentell.",
+    "language": "de",
+    "tvTypes": [
+      "Movie"
+    ],
+    "apiVersion": 1,
+    "url": "https://raw.githubusercontent.com/aadel886/serienstream-ip/builds/FilmoIP.cs3",
+    "fileSize": 46932,
+    "repositoryUrl": "https://github.com/aadel886/serienstream-ip"
   }
 ]

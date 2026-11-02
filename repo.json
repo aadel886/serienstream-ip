@@ -1,6 +1,6 @@
 {
-  "name": "SerienStream IP Repository",
-  "description": "Eigene experimentelle SerienStream-Erweiterung",
+  "name": "SerienStream & Filmo IP",
+  "description": "SerienStream für Serien und Filmo für Filme",
   "manifestVersion": 1,
   "pluginLists": [
     "https://raw.githubusercontent.com/aadel886/serienstream-ip/builds/plugins.json"
