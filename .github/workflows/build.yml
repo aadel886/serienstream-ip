@@ -3,7 +3,7 @@ name: Build and publish Cloudstream repo
 on:
   push:
     branches: [main, master]
-    paths: [Source.zip, .github/workflows/build.yml]
+    paths: [Source.zip, FilmoSource.zip, .github/workflows/build.yml]
   workflow_dispatch:
 
 permissions:
@@ -26,14 +26,20 @@ jobs:
         with:
           python-version: '3.12'
       - name: Extract source
-        run: unzip -q Source.zip -d source
+        run: |
+          unzip -q Source.zip -d source
+          unzip -q FilmoSource.zip -d film
       - uses: actions/cache@v4
         with:
           path: source/.build-cache
-          key: cloudstream-deps-${{ hashFiles('source/dependencies.json') }}
+          key: cloudstream-deps-${{ hashFiles('source/dependencies.json', 'film/dependencies.json') }}
       - name: Compile, test and package
         working-directory: source
         run: python tools/build.py
+      - name: Compile, test and package movies
+        run: python film/tools/build.py --cache source/.build-cache
+      - name: Combine repository
+        run: python film/tools/assemble_repo.py --output repository-dist source/dist film/dist
       - name: Publish installation files
         env:
           SOURCE_REPO: ${{ github.repository }}
@@ -50,14 +56,15 @@ jobs:
           else
             git checkout --orphan builds
           fi
-          cp "$GITHUB_WORKSPACE"/source/dist/SerienStreamIP.cs3 .
-          cp "$GITHUB_WORKSPACE"/source/dist/plugins.json .
-          cp "$GITHUB_WORKSPACE"/source/dist/repo.json .
+          cp "$GITHUB_WORKSPACE"/repository-dist/SerienStreamIP.cs3 .
+          cp "$GITHUB_WORKSPACE"/repository-dist/FilmoIP.cs3 .
+          cp "$GITHUB_WORKSPACE"/repository-dist/plugins.json .
+          cp "$GITHUB_WORKSPACE"/repository-dist/repo.json .
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add SerienStreamIP.cs3 plugins.json repo.json
+          git add SerienStreamIP.cs3 FilmoIP.cs3 plugins.json repo.json
           if ! git diff --cached --quiet; then
-            git commit -m "Build SerienStream IP"
+            git commit -m "Build SerienStream and Filmo IP"
             git push origin HEAD:builds
           fi
           printf 'Repo URL: https://raw.githubusercontent.com/%s/builds/repo.json\n' "$SOURCE_REPO" >> "$GITHUB_STEP_SUMMARY"
