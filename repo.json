@@ -1,0 +1,8 @@
+{
+  "name": "SerienStream IP Repository",
+  "description": "Eigene experimentelle SerienStream-Erweiterung",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/aadel886/serienstream-ip/builds/plugins.json"
+  ]
+}
